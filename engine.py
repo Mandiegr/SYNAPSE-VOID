@@ -36,7 +36,9 @@ class SystemicDustEngine:
             "Padrão": "FOCO: Síntese equilibrada entre técnica e teoria crítica."
         }
 
-        specific_prompt = f"{self.base_prompt}\n\nMODO OPERACIONAL ATIVO: {persona}. {directives.get(persona, '')}"
+        context_block = ""
+        if context_pdf:
+            context_block = f"\n\n### CONTEXTO DOS DOCUMENTOS (PRIORIDADE MÁXIMA):\n{context_pdf}\n"
         
         try:
             last_query = chat_history[-1]["content"].lower()
@@ -45,20 +47,25 @@ class SystemicDustEngine:
             gatilhos = ["busque", "pesquise", "internet", "web"]
             if any(x in last_query for x in gatilhos) and web_tool:
                 web_context = web_tool.search(last_query)
+                context_block += f"\n### CONTEXTO DA WEB:\n{web_context}\n"
 
-            full_context = f"CONTEXTO PDFs:\n{context_pdf}\n\nCONTEXTO WEB:\n{web_context}"
+            full_system_instruction = (
+                f"{self.base_prompt}\n\n"
+                f"MODO OPERACIONAL ATIVO: {persona}. {directives.get(persona, '')}\n"
+                f"{context_block}\n"
+                "IMPORTANTE: Se houver dados no CONTEXTO DOS DOCUMENTOS acima, use-os como base principal e cite '[FONTE INTERNA]'."
+            )
             
-            messages = [
-                {"role": "system", "content": specific_prompt},
-                {"role": "system", "content": f"DADOS:\n{full_context}"}
-            ]
-            messages.extend(chat_history)
+            messages = [{"role": "system", "content": full_system_instruction}]
+            
+        
+            messages.extend(chat_history[-6:])
 
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
-                temperature=0.4,
+                temperature=0.3, 
             )
             return completion.choices[0].message.content
         except Exception as e:
-            return f" Erro: {e}"
+            return f" Erro no Processamento: {e}"
