@@ -41,11 +41,11 @@ with st.sidebar:
             if not os.path.exists("./knowledge"): os.makedirs("./knowledge")
             for f in uploaded_files:
                 with open(os.path.join("./knowledge", f.name), "wb") as out:
-                    out.write(f.getbuffer())
+                    out.write(f.getvalue())
             with st.spinner("Indexando..."):
                 st.session_state.memory.ingest_knowledge()
                 st.success("Conhecimento integrado!")
-                st.rerun()
+                ##st.rerun()
                 
     st.divider()
     st.subheader("Exportar")
