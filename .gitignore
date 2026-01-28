@@ -3,7 +3,7 @@
 *.env
 
 chroma_db/
-knowledge/
+
 reports/
 outputs/
 
