@@ -10,3 +10,5 @@ pysqlite3-binary
 matplotlib
 fpdf2
 tavily-python
+sentence-transformers
+transformers
