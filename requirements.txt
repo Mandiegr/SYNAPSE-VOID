@@ -12,3 +12,4 @@ fpdf2
 tavily-python
 sentence-transformers
 transformers
+matplotlib-venn
