@@ -3,9 +3,11 @@ groq>=0.33.0
 python-dotenv
 chromadb
 pypdf
+pymupdf
 langchain-community
 langchain-huggingface
 langchain-text-splitters
+langchain-chroma
 pysqlite3-binary
 matplotlib
 fpdf2
@@ -13,3 +15,7 @@ tavily-python
 sentence-transformers
 transformers
 matplotlib-venn
+pandas
+openpyxl
+seaborn
+scipy

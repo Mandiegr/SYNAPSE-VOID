@@ -27,7 +27,7 @@ with st.sidebar:
     st.subheader(" Persona do Núcleo")
     persona = st.selectbox(
         "Modo de análise:",
-        ["Padrão", "Arquiteto", "Filósofo", "Debugger"]
+        ["Padrão", "Arquiteto", "Debugger", "Filósofo", "Cientista de Dados" ]
     )
 
     st.divider()
@@ -82,18 +82,20 @@ for i, msg in enumerate(st.session_state.chat_history):
                         else:
                             st.error(res["log"])
 
+
 if prompt := st.chat_input("Digite sua pergunta ou comando..."):
     st.session_state.chat_history.append({"role": "user", "content": prompt})
     
     context_pdf = st.session_state.memory.get_context(prompt)
     
-    with st.spinner(f"Respondendo como {persona}..."):
+    with st.spinner(f"Analisando dados como {persona}..."):
+       
         response = st.session_state.engine.process_thought(
-        st.session_state.chat_history, 
-        context_pdf, 
-        persona=persona,  
-        web_tool=st.session_state.web_search
-)
+            st.session_state.chat_history, 
+            context_pdf, 
+            persona=persona,  
+            web_tool=st.session_state.web_search
+        )
         
     st.session_state.chat_history.append({"role": "assistant", "content": response})
     st.rerun()

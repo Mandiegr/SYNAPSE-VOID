@@ -4,6 +4,9 @@ import os
 import gc
 import matplotlib.pyplot as plt
 from datetime import datetime
+import pandas as pd
+import seaborn as sns
+import numpy as np
 
 class PythonInterpreter:
     def __init__(self):
@@ -21,7 +24,7 @@ class PythonInterpreter:
             plt.clf()
             plt.close('all')
             
-            exec_globals = {"plt": plt, "os": os, "datetime": datetime}
+            exec_globals = {"plt": plt, "sns": sns, "pd": pd, "np": np, "os": os,"datetime": datetime}
             exec(code, exec_globals)
             
             fig = plt.gcf()
